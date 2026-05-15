@@ -1,0 +1,135 @@
+.book-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1200px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.book {
+    display: flex;
+    width: 340px;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    transition: translate 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    translate: calc(min(var(--c), 1) * 50%) 0%;
+    rotate: 1 0 0 18deg;
+}
+
+.page {
+    --z: 4px;
+    flex: none;
+    display: flex;
+    width: 100%;
+    pointer-events: all;
+    user-select: none;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition:
+        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+        rotate 0.8s cubic-bezier(0.4, 0, 0.2, 1)
+            calc((min(var(--i), var(--c)) - max(var(--i), var(--c))) * 60ms);
+    translate: calc(var(--i) * -100%) 0px 0px;
+    transform: translateZ(calc((var(--c) - var(--i) - 0.5) * var(--z)));
+    rotate: 0 1 0 calc(clamp(0, var(--c) - var(--i), 1) * -180deg);
+}
+
+.front,
+.back {
+    flex: none;
+    width: 100%;
+    backface-visibility: hidden;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    translate: 0px;
+    background: #fff;
+}
+
+.front canvas,
+.back canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.back {
+    translate: -100% 0;
+    rotate: 0 1 0 180deg;
+    background-image: linear-gradient(to right, #fff 85%, #e8e4e0 100%);
+}
+
+/* Navigation */
+.book-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    translate: -50% 0;
+    z-index: 20;
+    display: flex;
+    gap: 10px;
+    pointer-events: all;
+}
+
+.book-nav button {
+    background: rgba(24, 24, 28, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #e0e0e0;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font: 13px/1 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.book-nav button:hover {
+    background: rgba(44, 44, 48, 0.95);
+}
+
+.book-nav button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.book-nav .page-indicator {
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.6);
+    font: 12px/1 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    padding: 0 8px;
+}
+
+/* Toggle button */
+.book-toggle {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 20;
+    background: rgba(24, 24, 28, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #e0e0e0;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font: 12px/1 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.book-toggle:hover {
+    background: rgba(44, 44, 48, 0.95);
+}
+
+.book-container.hidden {
+    display: none;
+}
+.book-nav.hidden,
+.book-toggle.hidden-label {
+    display: none;
+}
